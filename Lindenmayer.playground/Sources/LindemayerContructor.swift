@@ -16,13 +16,12 @@ open class LindenmayerConstructor {
     let initialState: State
     let unitLength: Double
     
-    init(initialState: State, unitLength: Double) {
+    public init(initialState: State, unitLength: Double) {
         self.initialState = initialState
         self.unitLength = unitLength
     }
     
-    func path(rules: [LindenmayerRule]) -> CGPath {
-        
+    public func path(rules: [LindenmayerRule], forRect destinationRect: CGRect? = nil) -> CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 0, y: 0))
         
@@ -49,7 +48,29 @@ open class LindenmayerConstructor {
             }
         }
         
-        return path
+        guard let destinationRect = destinationRect else {
+            return path
+        }
+        
+        // Fit the path into our bounds
+        var pathRect = path.boundingBox
+        let containerRect = destinationRect.insetBy(dx: CGFloat(unitLength), dy: CGFloat(unitLength))
+        
+        // First make sure the path is aligned with our origin
+        var transform = CGAffineTransform(translationX: -pathRect.minX, y: -pathRect.minY)
+        var transformedPath = path.copy(using: &transform)!
+        
+        // Next, scale the path to fit snuggly in our path
+        pathRect = transformedPath.boundingBoxOfPath
+        let scale = min(containerRect.width / pathRect.width, containerRect.height / pathRect.height)
+        transform = CGAffineTransform(scaleX: scale, y: scale)
+        transformedPath = transformedPath.copy(using: &transform)!
+        
+        // Finally, move the path to the correct origin
+        transform = CGAffineTransform(translationX: containerRect.minX, y: containerRect.minY)
+        transformedPath = transformedPath.copy(using: &transform)!
+        
+        return transformedPath
     }
     
     // MARK: - Private
