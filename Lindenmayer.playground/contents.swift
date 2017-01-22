@@ -65,3 +65,11 @@ let koch = Lindenmayer(start: "F",
 view.initialState = LindenmayerView.State(0, CGPoint(x: 0, y: 0))
 view.rules = koch.expand(4)
 
+//: ## Gosper curve
+let gosper = Lindenmayer(start: "A",
+                         rules: ["A": "A-B--B+A++AA+B-",
+                                 "B": "+A-BB--B-A++A+B"],
+                         variables: ["A": .draw, "B": .draw, "-": .turn(.left, 60), "+": .turn(.right, 60)])
+
+view.initialState = LindenmayerView.State(0, CGPoint(x: 0, y: 0))
+view.rules = gosper.expand(3)
