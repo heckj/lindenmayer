@@ -79,3 +79,5 @@ let gosper = Lindenmayer(start: "A",
 view.initialState = .init(0, CGPoint(x: 0, y: 0))
 view.rules = gosper.expand(3)
 view.setNeedsDisplay()
+
+//: [Next](@next)
