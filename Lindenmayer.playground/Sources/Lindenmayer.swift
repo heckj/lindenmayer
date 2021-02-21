@@ -97,7 +97,7 @@ public struct Lindenmayer {
         let state = self.evolve(generations, state: self.start)
         
         var result = [LindenmayerRule]()
-        for character in state.characters {
+        for character in state {
             if let rule = self.variables[String(character)], rule != .ignore {
                 result.append(rule)
             }
@@ -114,7 +114,7 @@ public struct Lindenmayer {
         
         // Expand each variable with its corresponding rule (or itself)
         var result: String = ""
-        for character in state.characters {
+        for character in state {
             if let rule = rules[String(character)] {
                 result += rule
             } else {

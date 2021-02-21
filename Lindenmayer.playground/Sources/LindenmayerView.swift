@@ -119,7 +119,7 @@ open class LindenmayerView: UIView {
     }
     
     fileprivate func degreesToRadians(_ value:Double) -> Double {
-        return value * M_PI / 180.0
+        return value * .pi / 180.0
     }
     
     fileprivate func calculateState(_ state: State, distance: Double) -> State {
